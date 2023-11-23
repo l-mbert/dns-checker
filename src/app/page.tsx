@@ -86,9 +86,22 @@ export default function Home() {
 
           {/* Previous URLs */}
           <div className="rounded-md border border-gray-200 bg-white px-6 py-8">
-            <h2 className="text-md font-medium text-gray-700">
-              Previously checked
-            </h2>
+            <div className="flex justify-between">
+              <h2 className="text-md font-medium text-gray-700">
+                Previously checked
+              </h2>
+              <button
+                onClick={() => {
+                  if (typeof window !== 'undefined') {
+                    localStorage.setItem('prevChecked', '[]');
+                  }
+                  setPreviouslyChecked([]);
+                }}
+                className="text-gray-500 text-xs"
+              >
+                Clear
+              </button>
+            </div>
             {previouslyChecked.length > 0 ? (
               <ul className="mt-2 space-y-1">
                 {previouslyChecked.map((url) => (
