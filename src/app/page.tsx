@@ -13,6 +13,8 @@ export default function Home() {
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [advanedOptionsOpen, setAdvancedOptionsOpen] = useState(false);
+  const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
+  const [refreshTimeCountdown, setRefreshTimeCountdown] = useState<number>(0); // [seconds
   const [refreshInterval, setRefreshInterval] = useState<number>();
   const [recordType, setRecordType] = useState<RecordType>('A');
 
@@ -43,32 +45,72 @@ export default function Home() {
     setPreviouslyChecked(prevChecked);
 
     setResolvedAddresses(addresses);
+    setLastRefresh(new Date());
     setLoading(false);
   };
 
   useEffect(() => {
     let int: NodeJS.Timeout;
+    let uiInt: NodeJS.Timeout;
     // Refresh interval
     if (refreshInterval) {
       int = setInterval(() => {
         checkDomain();
       }, refreshInterval * 1000);
+
+      // UI interval
+      uiInt = setInterval(() => {
+        if (refreshInterval === 0) {
+          setRefreshTimeCountdown(0);
+          return;
+        }
+
+        const secondsUntilNextRefresh = Math.round(
+          (refreshInterval * 1000 -
+            (new Date().getTime() - lastRefresh.getTime())) /
+            1000
+        );
+        // Fix off by one error
+        if (secondsUntilNextRefresh === 0) {
+          setLastRefresh(new Date());
+          setRefreshTimeCountdown(refreshInterval);
+          return;
+        }
+        setRefreshTimeCountdown(secondsUntilNextRefresh);
+      }, 1000);
     }
 
     return () => {
       if (int) clearInterval(int);
+      if (uiInt) clearInterval(uiInt);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshInterval]);
+  }, [refreshInterval, lastRefresh]);
 
   return (
     <main className="min-h-screen flex flex-col">
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto py-14 px-4 lg:px-0">
-          <h1 className="font-heading text-3xl">Domain Checker</h1>
-          <p className="mt-2 text-gray-500">
-            Check if your domain is pointing to the right IP address.
-          </p>
+        <div className="flex flex-col justify-between lg:items-center max-w-6xl mx-auto py-14 px-4 lg:px-0 lg:flex-row space-y-4">
+          <div>
+            <h1 className="font-heading text-3xl">Domain Checker</h1>
+            <p className="mt-2 text-gray-500">
+              Check if your domain is pointing to the right IP address.
+            </p>
+          </div>
+          {refreshInterval && (
+            <div>
+              <p className="flex items-center mt-2 text-gray-500">
+                Refreshing in{' '}
+                <span className="mx-1.5 px-2 py-1 bg-gray-100 tabular-nums rounded-sm leading-0">
+                  {refreshTimeCountdown < 10 && (
+                    <span className="opacity-0">0</span>
+                  )}
+                  {refreshTimeCountdown}
+                </span>{' '}
+                second(s)
+              </p>
+            </div>
+          )}
         </div>
       </div>
       <div className="mx-auto flex flex-col items-start w-full max-w-6xl gap-4 mt-10 flex-1 pb-14 px-4 lg:px-0 lg:flex-row">
@@ -135,9 +177,15 @@ export default function Home() {
                       name="refresh"
                       id="refresh"
                       value={refreshInterval}
-                      onChange={(e) =>
-                        setRefreshInterval(parseInt(e.target.value, 10))
-                      }
+                      onChange={(e) => {
+                        setLastRefresh(new Date());
+
+                        if (e.target.value === '') {
+                          setRefreshInterval(undefined);
+                          return;
+                        }
+                        setRefreshInterval(parseInt(e.target.value, 10));
+                      }}
                     />
                     <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 text-xs">
                       seconds
