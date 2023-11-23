@@ -21,10 +21,16 @@ export const GET = async (
       const resolver: Resolver = new Resolver();
       resolver.setServers([server.ip]);
       return new Promise<Record<string, string>>((resolve, reject) => {
+        // Make sure the resolve is not taking too long
+        const timeout = setTimeout(() => {
+          reject(new Error('Timeout'));
+        }, 2000);
         resolver.resolve4(domain, (err, addresses) => {
           if (err) {
+            clearTimeout(timeout);
             reject(err);
           } else {
+            clearTimeout(timeout);
             resolve({
               [server.name]: addresses[0],
             });
