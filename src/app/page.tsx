@@ -64,15 +64,15 @@ export default function Home() {
   return (
     <main className="min-h-screen flex flex-col">
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto py-14">
+        <div className="max-w-6xl mx-auto py-14 px-4 lg:px-0">
           <h1 className="font-heading text-3xl">Domain Checker</h1>
           <p className="mt-2 text-gray-500">
             Check if your domain is pointing to the right IP address.
           </p>
         </div>
       </div>
-      <div className="mx-auto flex items-start w-full max-w-6xl gap-4 mt-10 flex-1 pb-14">
-        <div className="max-w-md w-full space-y-6">
+      <div className="mx-auto flex flex-col items-start w-full max-w-6xl gap-4 mt-10 flex-1 pb-14 px-4 lg:px-0 lg:flex-row">
+        <div className="w-full space-y-6 lg:max-w-md mb-8 lg:mb-0">
           <form
             className="rounded-md border border-gray-200 bg-white px-6 py-8"
             onSubmit={(e) => {
@@ -214,7 +214,10 @@ export default function Home() {
             )}
           </div>
         </div>
-        <div className="flex-1">
+        <div className="flex-1 w-full">
+          <h2 className="block lg:hidden font-heading text-3xl mb-4">
+            Results
+          </h2>
           <div className="space-y-2">
             {dnsServers.map((dnsServer) => (
               <div
@@ -252,7 +255,7 @@ export default function Home() {
         </div>
       </div>
       <div className="bg-white border-t border-gray-200">
-        <div className="max-w-6xl mx-auto py-4">
+        <div className="max-w-6xl mx-auto py-4 px-4 lg:px-0">
           <p className="mt-2 text-gray-500 text-xs flex items-center gap-1">
             Made by{' '}
             <a
