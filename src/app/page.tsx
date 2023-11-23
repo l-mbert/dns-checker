@@ -127,7 +127,6 @@ export default function Home() {
                         (leave empty to disable)
                       </span>
                     </label>
-                    d
                   </div>
                   <div className="relative mt-1 flex rounded-md shadow-sm">
                     <Input
