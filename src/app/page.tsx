@@ -31,8 +31,9 @@ export default function Home() {
     const prevChecked = JSON.parse(localStorage.getItem('prevChecked') || '[]');
     if (!prevChecked.includes(url)) {
       prevChecked.unshift(url);
-      if (typeof window !== 'undefined') return;
-      localStorage.setItem('prevChecked', JSON.stringify(prevChecked));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('prevChecked', JSON.stringify(prevChecked));
+      }
     }
     setPreviouslyChecked(prevChecked);
 
