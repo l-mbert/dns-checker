@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { dnsServers } from '@/constants/dnsServers';
+import { RecordTypes, type RecordType } from '@/constants/recordType';
 import { HeartFilledIcon } from '@radix-ui/react-icons';
 import { LoaderIcon } from 'lucide-react';
 
@@ -10,12 +11,16 @@ import { Input } from '@/components/ui/input';
 
 export default function Home() {
   const [url, setUrl] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [advanedOptionsOpen, setAdvancedOptionsOpen] = useState(false);
+  const [refreshInterval, setRefreshInterval] = useState<number>();
+  const [recordType, setRecordType] = useState<RecordType>('A');
+
   const [previouslyChecked, setPreviouslyChecked] = useState<string[]>(() => {
     if (typeof window === 'undefined') return [];
     const prevChecked = JSON.parse(localStorage.getItem('prevChecked') || '[]');
     return prevChecked;
   });
-  const [loading, setLoading] = useState(false);
   const [resolvedAddresses, setResolvedAddresses] = useState<
     Record<string, string>
   >({});
@@ -24,7 +29,7 @@ export default function Home() {
     if (!url) return;
 
     setLoading(true);
-    const res = await fetch(`/api/check/${url}`);
+    const res = await fetch(`/api/check/${url}/${recordType || 'A'}`);
     const { addresses } = await res.json();
 
     // Add domain to previously checked localStorage
@@ -40,6 +45,21 @@ export default function Home() {
     setResolvedAddresses(addresses);
     setLoading(false);
   };
+
+  useEffect(() => {
+    let int: NodeJS.Timeout;
+    // Refresh interval
+    if (refreshInterval) {
+      int = setInterval(() => {
+        checkDomain();
+      }, refreshInterval * 1000);
+    }
+
+    return () => {
+      if (int) clearInterval(int);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refreshInterval]);
 
   return (
     <main className="min-h-screen flex flex-col">
@@ -79,9 +99,81 @@ export default function Home() {
                 onChange={(e) => setUrl(e.target.value)}
               />
             </div>
-            <Button type="submit" className="mt-4">
-              Check my domain
-            </Button>
+            <div className="flex justify-between mt-4">
+              <Button type="submit">Check my domain</Button>
+              <Button
+                variant="link"
+                onClick={() => setAdvancedOptionsOpen(!advanedOptionsOpen)}
+              >
+                Advanced options
+              </Button>
+            </div>
+
+            {/* Advanced options */}
+            {advanedOptionsOpen && (
+              <div className="mt-4">
+                <hr className="border-gray-200 my-4" />
+                <h2 className="text-xs font-medium text-gray-700/60 mb-2">
+                  Advanced options
+                </h2>
+                <div>
+                  <div className="flex items-center justify-between">
+                    <label
+                      htmlFor="refresh"
+                      className="block space-x-1 text-sm font-medium text-gray-700"
+                    >
+                      <span>Refresh interval</span>
+                      <span className="text-gray-500 text-xs">
+                        (leave empty to disable)
+                      </span>
+                    </label>
+                    d
+                  </div>
+                  <div className="relative mt-1 flex rounded-md shadow-sm">
+                    <Input
+                      className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                      type="number"
+                      name="refresh"
+                      id="refresh"
+                      value={refreshInterval}
+                      onChange={(e) =>
+                        setRefreshInterval(parseInt(e.target.value, 10))
+                      }
+                    />
+                    <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 text-xs">
+                      seconds
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <div className="flex items-center justify-between mt-4">
+                    <label
+                      htmlFor="recordType"
+                      className="block space-x-1 text-sm font-medium text-gray-700"
+                    >
+                      <span>Record Type</span>
+                    </label>
+                  </div>
+                  <div className="relative mt-1 flex rounded-md shadow-sm">
+                    <select
+                      id="recordType"
+                      name="recordType"
+                      value={recordType}
+                      onChange={(e) =>
+                        setRecordType(e.target.value as RecordType)
+                      }
+                      className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                    >
+                      {Object.keys(RecordTypes).map((type) => (
+                        <option key={type} value={type}>
+                          {type}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            )}
           </form>
 
           {/* Previous URLs */}
@@ -126,7 +218,7 @@ export default function Home() {
           <div className="space-y-2">
             {dnsServers.map((dnsServer) => (
               <div
-                key={dnsServer.name}
+                key={dnsServer.ip}
                 className="rounded-md border border-gray-200 bg-white px-6 py-8"
               >
                 <div className="flex items-center justify-between">
