@@ -35,6 +35,11 @@ export const GET = async (
           } else {
             clearTimeout(timeout);
             const item = addresses;
+            if (!item) {
+              return resolve({
+                [server.name]: '',
+              });
+            }
 
             switch (recordType) {
               case RecordTypes.A:
