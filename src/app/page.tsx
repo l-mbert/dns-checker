@@ -54,6 +54,11 @@ export default function Home() {
     let uiInt: NodeJS.Timeout;
     // Refresh interval
     if (refreshInterval) {
+      if (refreshInterval < 5) {
+        setRefreshInterval(5);
+        return;
+      }
+
       int = setInterval(() => {
         checkDomain();
       }, refreshInterval * 1000);
@@ -175,6 +180,7 @@ export default function Home() {
                       className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                       type="number"
                       name="refresh"
+                      min={5}
                       id="refresh"
                       value={refreshInterval}
                       onChange={(e) => {
