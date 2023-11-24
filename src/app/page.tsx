@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { dnsServers } from '@/constants/dnsServers';
 import { RecordTypes, type RecordType } from '@/constants/recordType';
@@ -11,9 +12,10 @@ import { LoaderIcon } from 'lucide-react';
 import { useQueryString } from '@/hooks/queryString';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
-import { PreviousDomainsList } from '@/components/previous-domains-list';
 import { ResultItem } from '@/components/result-item';
 import { SearchForm } from '@/components/search-form';
+
+const PreviousDomainsList = dynamic(() => import('@/components/previous-domains-list'), { ssr: false });
 
 export default function Home() {
   const router = useRouter();

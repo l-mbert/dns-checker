@@ -5,7 +5,8 @@ import { usePreviouslyCheckedStore } from '@/stores/previouslyCheckedStore';
 
 import { useQueryString } from '@/hooks/queryString';
 
-export function PreviousDomainsList() {
+// Default export because it's used as dynamic import without ssr
+export default function PreviousDomainsList() {
   const router = useRouter();
   const { createQueryString } = useQueryString();
   const { previouslyCheckedList, clearPreviouslyChecked } = usePreviouslyCheckedStore();
