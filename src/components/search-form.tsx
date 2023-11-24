@@ -74,7 +74,7 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
             <p className="mt-2 text-xs text-red-500">{form.formState.errors.url.message}</p>
           )}
         </div>
-        <div className="flex justify-between mt-4">
+        <div className="mt-4 flex justify-between">
           <Button type="submit">Check my domain</Button>
           <Button type="button" variant="link" onClick={() => setAdvancedOptionsOpen((prev) => !prev)}>
             Advanced options
@@ -84,13 +84,13 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
         {/* Advanced options */}
         {advancedOptionsOpen && (
           <div className="mt-4">
-            <hr className="border-gray-200 my-4" />
-            <h2 className="text-xs font-medium text-gray-700/60 mb-2">Advanced options</h2>
+            <hr className="my-4 border-gray-200" />
+            <h2 className="mb-2 text-xs font-medium text-gray-700/60">Advanced options</h2>
             <div>
               <div className="flex items-center justify-between">
                 <label htmlFor="refresh" className="block space-x-1 text-sm font-medium text-gray-700">
                   <span>Refresh interval</span>
-                  <span className="text-gray-500 text-xs">(leave empty to disable)</span>
+                  <span className="text-xs text-gray-500">(leave empty to disable)</span>
                 </label>
               </div>
               <div className="relative mt-1 flex rounded-md">
@@ -98,10 +98,10 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
                   type="number"
                   min={5}
                   id="refresh"
-                  className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none shadow-sm"
+                  className="shadow-sm [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                   {...form.register('refresh')}
                 />
-                <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 text-xs">
+                <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-xs text-gray-500">
                   seconds
                 </span>
               </div>
@@ -110,7 +110,7 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
               )}
             </div>
             <div>
-              <div className="flex items-center justify-between mt-4">
+              <div className="mt-4 flex items-center justify-between">
                 <label htmlFor="recordType" className="block space-x-1 text-sm font-medium text-gray-700">
                   <span>Record Type</span>
                 </label>
@@ -118,7 +118,7 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
               <div className="relative mt-1 flex rounded-md shadow-sm">
                 <select
                   id="recordType"
-                  className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  className="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   {...form.register('recordType')}
                 >
                   {RecordTypes.map((type) => (
@@ -129,8 +129,8 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
                 </select>
               </div>
             </div>
-            <hr className="border-gray-200 my-4" />
-            <h2 className="text-xs font-medium text-gray-700/60 mb-2">Tests</h2>
+            <hr className="my-4 border-gray-200" />
+            <h2 className="mb-2 text-xs font-medium text-gray-700/60">Tests</h2>
             <ul className="mt-2 space-y-2">
               {tests.map((test) => (
                 <TestItem key={test.id} test={test} />
@@ -139,7 +139,7 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
             <Button
               type="button"
               variant="secondary"
-              className="w-full mt-2"
+              className="mt-2 w-full"
               onClick={() => {
                 setShowEditTestModal(true);
               }}

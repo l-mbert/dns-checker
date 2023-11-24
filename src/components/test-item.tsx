@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils';
 
 import { IconMenu } from './icon-menu';
 import { useEditTestModal } from './modals/edit-test-modal';
-import { Button } from './ui/button';
 import { Popover } from './ui/popover';
 
 const testItemVariants = cva('flex justify-between px-3 py-2 rounded-md', {

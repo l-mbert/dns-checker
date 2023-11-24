@@ -31,7 +31,7 @@ export function Switch({
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <div className="radix-state-checked:bg-gray-300 relative inline-flex h-4 w-8 flex-shrink-0 cursor-not-allowed rounded-full border-2 border-transparent bg-gray-200">
+            <div className="relative inline-flex h-4 w-8 flex-shrink-0 cursor-not-allowed rounded-full border-2 border-transparent bg-gray-200 radix-state-checked:bg-gray-300">
               <div className="h-3 w-3 transform rounded-full bg-white shadow-lg" />
             </div>
           </TooltipTrigger>
@@ -53,7 +53,7 @@ export function Switch({
       className={cn(
         disabled
           ? 'cursor-not-allowed bg-gray-300'
-          : 'radix-state-checked:bg-gray-500 radix-state-unchecked:bg-gray-200 cursor-pointer focus:outline-none focus-visible:ring focus-visible:ring-blue-500 focus-visible:ring-opacity-75',
+          : 'cursor-pointer focus:outline-none focus-visible:ring focus-visible:ring-blue-500 focus-visible:ring-opacity-75 radix-state-checked:bg-gray-500 radix-state-unchecked:bg-gray-200',
         'relative inline-flex h-4 w-8 flex-shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out',
         trackDimensions
       )}

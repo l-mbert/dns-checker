@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { dnsServers } from '@/constants/dnsServers';
 import { RecordTypes, type RecordType } from '@/constants/recordType';
@@ -108,7 +108,7 @@ export default function Home() {
           </div>
         )}
       </Header>
-      <div className="mx-auto flex flex-col items-start w-full max-w-6xl gap-4 mt-10 flex-1 pb-14 px-4 lg:px-0 lg:flex-row">
+      <div className="mx-auto flex flex-col items-start w-full max-w-6xl gap-4 mt-10 flex-1 pb-14 px-4 lg:flex-row">
         <div className="w-full space-y-6 lg:max-w-md mb-8 lg:mb-0">
           <SearchForm
             onSubmit={(data) => {

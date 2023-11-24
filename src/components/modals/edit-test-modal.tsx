@@ -55,12 +55,12 @@ export function EditTestModal({
   return (
     <Modal showModal={showEditTestModal} setShowModal={setShowEditTestModal}>
       <div className="flex flex-col items-center justify-center space-y-3 border-b border-gray-200 px-4 py-4 pt-8 sm:px-16">
-        <FlaskConicalIcon className="w-16 h-16 text-white bg-black rounded-full px-3" />
+        <FlaskConicalIcon className="h-16 w-16 rounded-full bg-black px-3 text-white" />
         <h1 className="text-lg font-medium">{test ? 'Edit' : 'Add'} Test</h1>
       </div>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col space-y-4 bg-gray-50 px-2 py-8 text-left sm:px-10"
+        className="flex flex-col space-y-4 bg-gray-50 px-4 py-8 text-left sm:px-10"
       >
         <div>
           <label htmlFor="name" className="flex items-center space-x-2">
@@ -107,7 +107,7 @@ export function EditTestModal({
           <div className="relative mt-1 rounded-md shadow-sm">
             <select
               id="type"
-              className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm rounded-md"
+              className="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-gray-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
               {...form.register('type')}
             >
               <option value="equals">Equals</option>
@@ -141,7 +141,7 @@ export function EditTestModal({
             />
             <label
               htmlFor="negated"
-              className="flex flex-col md:flex-row md:items-center md:space-x-2 text-sm font-medium text-gray-700"
+              className="flex flex-col text-sm font-medium text-gray-700 md:flex-row md:items-center md:space-x-2"
             >
               <span>Negated</span>
               {isMobile ? (
@@ -153,8 +153,8 @@ export function EditTestModal({
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger type="button">
-                      <div className="h-6 w-6 flex items-center justify-center">
-                        <InfoIcon className="w-4 h-4 text-gray-500" />
+                      <div className="flex h-6 w-6 items-center justify-center">
+                        <InfoIcon className="h-4 w-4 text-gray-500" />
                       </div>
                     </TooltipTrigger>
                     <TooltipContent className="max-w-sm">
@@ -170,7 +170,7 @@ export function EditTestModal({
           </div>
         </div>
         <div>
-          <Button type="submit" className="w-full mt-2">
+          <Button type="submit" className="mt-2 w-full">
             {test ? 'Save' : 'Add'}
           </Button>
         </div>
