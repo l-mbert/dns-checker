@@ -135,7 +135,7 @@ export default function Home() {
                     </div>
                   ) : result && result.value !== '' ? (
                     <div className="flex flex-col items-end">
-                      <span className="text-green-500">{result.value}</span>
+                      <span className="text-green-500 font-mono tracking-tight tabular-nums">{result.value}</span>
                       <span className="text-gray-400 text-xs">{result.time}ms</span>
                     </div>
                   ) : url.length > 0 ? (

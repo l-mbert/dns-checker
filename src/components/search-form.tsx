@@ -16,7 +16,12 @@ interface SearchFormProps {
 }
 
 const formSchema = z.object({
-  url: z.string(),
+  url: z
+    .string()
+    .min(3, {
+      message: 'The domain must be at least 3 characters long',
+    })
+    .max(255),
   refresh: z.string().optional(),
   recordType: z.enum(RecordTypes).default('A'),
 });
@@ -41,8 +46,9 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
           Your domain
         </label>
       </div>
-      <div className="relative mt-1 flex rounded-md shadow-sm">
-        <Input id="url" type="text" placeholder="example.com" {...form.register('url')} />
+      <div className="relative mt-1 flex flex-col rounded-md">
+        <Input id="url" type="text" placeholder="example.com" className="shadow-sm" {...form.register('url')} />
+        {form.formState.errors.url && <p className="mt-2 text-xs text-red-500">{form.formState.errors.url.message}</p>}
       </div>
       <div className="flex justify-between mt-4">
         <Button type="submit">Check my domain</Button>
@@ -63,12 +69,12 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
                 <span className="text-gray-500 text-xs">(leave empty to disable)</span>
               </label>
             </div>
-            <div className="relative mt-1 flex rounded-md shadow-sm">
+            <div className="relative mt-1 flex rounded-md">
               <Input
                 type="number"
                 min={5}
                 id="refresh"
-                className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none shadow-sm"
                 {...form.register('refresh')}
               />
               <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 text-xs">
