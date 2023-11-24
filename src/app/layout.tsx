@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           fontHeading.variable,
           GeistSans.variable,
           GeistMono.variable,
-          'font-sans bg-gray-50 text-foreground'
+          'bg-gray-50 font-sans text-foreground'
         )}
       >
         {children}

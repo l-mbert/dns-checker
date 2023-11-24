@@ -94,13 +94,13 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen flex flex-col">
+    <main className="flex min-h-screen flex-col">
       <Header>
         {refreshIntervalTime && (
           <div>
-            <p className="flex items-center mt-2 text-gray-500">
+            <p className="mt-2 flex items-center text-gray-500">
               Refreshing in{' '}
-              <span className="mx-1.5 px-2 py-1 bg-gray-100 tabular-nums rounded-sm leading-0 w-[37px] text-right font-mono">
+              <span className="leading-0 mx-1.5 w-[37px] rounded-sm bg-gray-100 px-2 py-1 text-right font-mono tabular-nums">
                 {secondsUntilNextRefresh}
               </span>{' '}
               second(s)
@@ -108,8 +108,8 @@ export default function Home() {
           </div>
         )}
       </Header>
-      <div className="mx-auto flex flex-col items-start w-full max-w-6xl gap-4 mt-10 flex-1 pb-14 px-4 lg:flex-row">
-        <div className="w-full space-y-6 lg:max-w-md mb-8 lg:mb-0">
+      <div className="mx-auto mt-10 flex w-full max-w-6xl flex-1 flex-col items-start gap-4 px-4 pb-14 lg:flex-row">
+        <div className="mb-8 w-full space-y-6 lg:mb-0 lg:max-w-md">
           <SearchForm
             onSubmit={(data) => {
               if (data.refresh && data.refresh !== '0') {
@@ -123,8 +123,8 @@ export default function Home() {
           />
           <PreviousDomainsList />
         </div>
-        <div className="flex-1 w-full">
-          <h2 className="block lg:hidden font-heading text-3xl mb-4">Results</h2>
+        <div className="w-full flex-1">
+          <h2 className="mb-4 block font-heading text-3xl lg:hidden">Results</h2>
           <div className="space-y-2">
             {dnsServers.map((dnsServer) => {
               const result = resolvedAddresses[dnsServer.name];
@@ -137,13 +137,13 @@ export default function Home() {
               return (
                 <ResultItem key={dnsServer.ip} dnsServer={dnsServer} testResults={testResults}>
                   {loading ? (
-                    <div className="animate-spin duration-[2000ms]">
+                    <div className="duration-[2000ms] animate-spin">
                       <LoaderIcon />
                     </div>
                   ) : result && result.value !== '' ? (
                     <div className="flex flex-col items-end">
-                      <span className="text-green-500 font-mono tracking-tight tabular-nums">{result.value}</span>
-                      <span className="text-gray-400 text-xs">{result.time}ms</span>
+                      <span className="font-mono tabular-nums tracking-tight text-green-500">{result.value}</span>
+                      <span className="text-xs text-gray-400">{result.time}ms</span>
                     </div>
                   ) : url.length > 0 ? (
                     <span className="text-red-500">Not found</span>
