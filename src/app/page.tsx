@@ -46,7 +46,7 @@ export default function Home() {
     const res = await fetch(`/api/check/${domain}/${recordType || 'A'}`);
     const { addresses } = await res.json();
 
-    addPreviouslyChecked(domain);
+    addPreviouslyChecked(domain, tests);
 
     setResolvedAddresses(addresses);
     setLastRefresh(new Date());

@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { usePreviouslyCheckedStore } from '@/stores/previouslyCheckedStore';
+import { useTestStore } from '@/stores/testStore';
 
 import { getRelativeTimeString } from '@/lib/relativeTimeString';
 import { useQueryString } from '@/hooks/queryString';
@@ -10,6 +11,7 @@ import { useQueryString } from '@/hooks/queryString';
 export default function PreviousDomainsList() {
   const router = useRouter();
   const { createQueryString } = useQueryString();
+  const { addTest } = useTestStore();
   const { previouslyCheckedList, clearPreviouslyChecked } = usePreviouslyCheckedStore();
 
   return (
@@ -22,23 +24,26 @@ export default function PreviousDomainsList() {
       </div>
       {previouslyCheckedList.length > 0 ? (
         <ul className="mt-2 space-y-1">
-          {previouslyCheckedList.map((previoslyCheckedItem) => (
-            <li key={previoslyCheckedItem.value} className="flex items-center justify-between">
+          {previouslyCheckedList.map((previouslyCheckedItem) => (
+            <li key={previouslyCheckedItem.value} className="flex items-center justify-between">
               <button
                 onClick={() => {
-                  router.push(`/?${createQueryString('url', previoslyCheckedItem.value)}`);
+                  if (previouslyCheckedItem.tests && previouslyCheckedItem.tests.length > 0) {
+                    previouslyCheckedItem.tests.forEach((test) => addTest(test));
+                  }
+                  router.push(`/?${createQueryString('url', previouslyCheckedItem.value)}`);
                 }}
                 className="text-sm text-gray-500 underline underline-offset-2 hover:underline-offset-4"
               >
-                {previoslyCheckedItem.value}
+                {previouslyCheckedItem.value}
               </button>
-              {previoslyCheckedItem.timestamp && (
+              {previouslyCheckedItem.timestamp && (
                 <div>
                   <time
                     className="text-xs text-gray-400"
-                    dateTime={new Date(previoslyCheckedItem.timestamp).toISOString()}
+                    dateTime={new Date(previouslyCheckedItem.timestamp).toISOString()}
                   >
-                    {getRelativeTimeString(previoslyCheckedItem.timestamp)}
+                    {getRelativeTimeString(previouslyCheckedItem.timestamp)}
                   </time>
                 </div>
               )}
