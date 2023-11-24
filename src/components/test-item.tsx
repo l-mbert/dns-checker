@@ -33,6 +33,10 @@ export function TestItem({ test, variant, className }: TestItemProps) {
   const { setShowEditTestModal, EditTestModal } = useEditTestModal({
     test,
     onSubmit: (data) => {
+      if (data.type === 'regex') {
+        // Remove leading and trailing slashes
+        data.value = data.value.replace(/^\/|\/$/g, '');
+      }
       updateTest({ ...data, id: test.id });
       setShowEditTestModal(false);
     },

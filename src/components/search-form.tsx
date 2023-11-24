@@ -35,6 +35,10 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
   const [advancedOptionsOpen, setAdvancedOptionsOpen] = useState(false);
   const { setShowEditTestModal, EditTestModal } = useEditTestModal({
     onSubmit: (data) => {
+      if (data.type === 'regex') {
+        // Remove leading and trailing slashes
+        data.value = data.value.replace(/^\/|\/$/g, '');
+      }
       addTest(data);
       setShowEditTestModal(false);
     },
