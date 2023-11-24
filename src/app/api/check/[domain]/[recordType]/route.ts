@@ -17,7 +17,7 @@ export const GET = async (
     return new Response('Bad request', { status: 400 });
   }
 
-  const addresses = await Promise.all(
+  const addressesResults = await Promise.allSettled(
     dnsServers.map((server: { ip: string; name: string }) => {
       const resolver: Resolver = new Resolver();
       resolver.setServers([server.ip]);
@@ -84,7 +84,14 @@ export const GET = async (
     })
   );
 
+  const addresses = addressesResults
+    .map((result) => {
+      if (result.status === 'fulfilled') return result.value;
+      return {};
+    })
+    .reduce((acc, cur) => ({ ...acc, ...cur }), {});
+
   return NextResponse.json({
-    addresses: addresses.reduce((acc, cur) => ({ ...acc, ...cur }), {}),
+    addresses: addresses,
   });
 };
