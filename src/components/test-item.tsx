@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 
 import { IconMenu } from './icon-menu';
 import { useEditTestModal } from './modals/edit-test-modal';
+import { TestExplainer } from './test-explainer';
 import { Popover } from './ui/popover';
 
 const testItemVariants = cva('flex justify-between px-3 py-2 rounded-md', {
@@ -42,32 +43,6 @@ export function TestItem({ test, variant, className }: TestItemProps) {
   });
   const [openPopover, setOpenPopover] = useState(false);
 
-  let testExplainerStart = '';
-  let testExplainerEnd = '';
-
-  switch (test.type) {
-    case 'contains':
-      testExplainerStart = '*';
-      testExplainerEnd = '*';
-      break;
-    case 'regex':
-      testExplainerStart = '/';
-      testExplainerEnd = '/';
-      break;
-    case 'equals':
-      testExplainerStart = '"';
-      testExplainerEnd = '"';
-      break;
-    case 'startsWith':
-      testExplainerStart = '*';
-      break;
-    case 'endsWith':
-      testExplainerEnd = '*';
-      break;
-  }
-
-  const testExplainerColor = test.negated ? 'text-red-500' : 'text-green-500';
-
   const onKeyDown = (e: any) => {
     if (openPopover && ['e', 'x'].includes(e.key)) {
       e.preventDefault();
@@ -96,11 +71,7 @@ export function TestItem({ test, variant, className }: TestItemProps) {
       <li className={cn(testItemVariants({ variant, className }))}>
         <div className="flex flex-col">
           <div className="text-xs">{test.name}</div>
-          <div className="font-mono text-sm">
-            {testExplainerStart !== '' && <span className={testExplainerColor}>{testExplainerStart}</span>}
-            {test.value}
-            {testExplainerEnd !== '' && <span className={testExplainerColor}>{testExplainerEnd}</span>}
-          </div>
+          <TestExplainer test={test} />
         </div>
         <div>
           <Popover

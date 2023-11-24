@@ -3,6 +3,7 @@ import { Test, TestResult } from '@/stores/testStore';
 import { InfoIcon } from 'lucide-react';
 
 import { Pill } from './pill';
+import { TestExplainer } from './test-explainer';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 
 interface ResultItemProps {
@@ -41,9 +42,22 @@ export function ResultItem({ dnsServer, testResults, children }: ResultItemProps
       {testResults && testResults.length > 0 && (
         <div className="mt-2 flex flex-wrap gap-x-2 gap-y-1.5">
           {testResults.map((testResult) => (
-            <Pill key={testResult.id} variant={testResult.result ? 'green' : 'red'}>
-              {testResult.name}
-            </Pill>
+            <TooltipProvider key={testResult.id}>
+              <Tooltip>
+                <TooltipTrigger>
+                  <div>
+                    <Pill key={testResult.id} variant={testResult.result ? 'green' : 'red'}>
+                      {testResult.name}
+                    </Pill>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-xs">
+                    Type: {testResult.type}, Test for: <TestExplainer test={testResult} fontSize="xs" />
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           ))}
         </div>
       )}
