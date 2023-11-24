@@ -42,25 +42,24 @@ export const GET = async (
             }
 
             switch (recordType) {
-              case RecordTypes.A:
-              case RecordTypes.AAAA:
+              case 'A':
+              case 'AAAA':
                 return resolve({
                   [server.name]: (item as string[])[0] || '',
                 });
-              case RecordTypes.MX:
+              case 'MX':
                 return resolve({
-                  [server.name]:
-                    (item as { exchange: string }[])[0]?.exchange || '',
+                  [server.name]: (item as { exchange: string }[])[0]?.exchange || '',
                 });
-              case RecordTypes.NS:
-                return resolve({
-                  [server.name]: (item as string[])[0] || '',
-                });
-              case RecordTypes.PTR:
+              case 'NS':
                 return resolve({
                   [server.name]: (item as string[])[0] || '',
                 });
-              case RecordTypes.TXT:
+              case 'PTR':
+                return resolve({
+                  [server.name]: (item as string[])[0] || '',
+                });
+              case 'TXT':
                 return resolve({
                   [server.name]: (item as string[])[0] || '',
                 });

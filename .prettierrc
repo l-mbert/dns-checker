@@ -1,4 +1,5 @@
 {
+  "printWidth": 120,
   "endOfLine": "lf",
   "semi": true,
   "singleQuote": true,
@@ -29,8 +30,5 @@
   "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],
   "importOrderMergeDuplicateImports": true,
   "importOrderCombineTypeAndValueImports": true,
-  "plugins": [
-    "prettier-plugin-tailwindcss",
-    "@ianvs/prettier-plugin-sort-imports"
-  ]
+  "plugins": ["prettier-plugin-tailwindcss", "@ianvs/prettier-plugin-sort-imports"]
 }

@@ -9,12 +9,7 @@ import { fontFamily } from 'tailwindcss/defaultTheme';
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ['class'],
-  content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-  ],
+  content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
   theme: {
     container: {
       center: true,
@@ -66,6 +61,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['var(--font-geist-sans)', ...fontFamily.sans],
+        mono: ['var(--font-geist-mono)', ...fontFamily.mono],
         heading: ['var(--font-heading)', ...fontFamily.sans],
       },
       keyframes: {
@@ -84,11 +80,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require('tailwindcss-animate'),
-    forms,
-    typography,
-    scrollbarHide,
-    radix,
-  ],
+  plugins: [require('tailwindcss-animate'), forms, typography, scrollbarHide, radix],
 };
