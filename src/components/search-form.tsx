@@ -35,7 +35,6 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
   const [advancedOptionsOpen, setAdvancedOptionsOpen] = useState(false);
   const { setShowEditTestModal, EditTestModal } = useEditTestModal({
     onSubmit: (data) => {
-      console.log(data);
       addTest(data);
       setShowEditTestModal(false);
     },
