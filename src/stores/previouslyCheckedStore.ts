@@ -25,11 +25,11 @@ export const usePreviouslyCheckedStore = create<PreviouslyCheckedStore>()(
         const now = Date.now();
         set((state) => ({
           previouslyCheckedList: [
-            ...state.previouslyCheckedList,
             {
               value: previouslyChecked,
               timestamp: now,
             },
+            ...state.previouslyCheckedList,
           ],
         }));
       },

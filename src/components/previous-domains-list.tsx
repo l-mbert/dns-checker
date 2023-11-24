@@ -32,14 +32,16 @@ export default function PreviousDomainsList() {
               >
                 {previoslyCheckedItem.value}
               </button>
-              <div>
-                <time
-                  className="text-xs text-gray-400"
-                  dateTime={new Date(previoslyCheckedItem.timestamp).toISOString()}
-                >
-                  {getRelativeTimeString(previoslyCheckedItem.timestamp)}
-                </time>
-              </div>
+              {previoslyCheckedItem.timestamp && (
+                <div>
+                  <time
+                    className="text-xs text-gray-400"
+                    dateTime={new Date(previoslyCheckedItem.timestamp).toISOString()}
+                  >
+                    {getRelativeTimeString(previoslyCheckedItem.timestamp)}
+                  </time>
+                </div>
+              )}
             </li>
           ))}
         </ul>
