@@ -11,7 +11,7 @@ import { useQueryString } from '@/hooks/queryString';
 export default function PreviousDomainsList() {
   const router = useRouter();
   const { createQueryString } = useQueryString();
-  const { addTest } = useTestStore();
+  const { addTest, clearTests } = useTestStore();
   const { previouslyCheckedList, clearPreviouslyChecked } = usePreviouslyCheckedStore();
 
   return (
@@ -29,6 +29,7 @@ export default function PreviousDomainsList() {
               <button
                 onClick={() => {
                   if (previouslyCheckedItem.tests && previouslyCheckedItem.tests.length > 0) {
+                    clearTests();
                     previouslyCheckedItem.tests.forEach((test) => addTest(test));
                   }
                   router.push(`/?${createQueryString('url', previouslyCheckedItem.value)}`);
