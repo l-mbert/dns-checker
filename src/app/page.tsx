@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { dnsServers } from '@/constants/dnsServers';
 import { RecordTypes, type RecordType } from '@/constants/recordType';
 import { usePreviouslyCheckedStore } from '@/stores/previouslyCheckedStore';
+import { TestResult, useTestStore } from '@/stores/testStore';
 import { LoaderIcon } from 'lucide-react';
 
 import { useQueryString } from '@/hooks/queryString';
@@ -17,6 +18,7 @@ import { SearchForm } from '@/components/search-form';
 export default function Home() {
   const router = useRouter();
   const { searchParams, createQueryString } = useQueryString();
+  const { tests, runTests } = useTestStore();
   const { addPreviouslyChecked } = usePreviouslyCheckedStore();
 
   const [loading, setLoading] = useState(false);
@@ -127,8 +129,13 @@ export default function Home() {
             {dnsServers.map((dnsServer) => {
               const result = resolvedAddresses[dnsServer.name];
 
+              let testResults: TestResult[] = [];
+              if (result && result.value !== '') {
+                testResults = runTests(result.value);
+              }
+
               return (
-                <ResultItem key={dnsServer.ip} dnsServer={dnsServer}>
+                <ResultItem key={dnsServer.ip} dnsServer={dnsServer} testResults={testResults}>
                   {loading ? (
                     <div className="animate-spin duration-[2000ms]">
                       <LoaderIcon />
