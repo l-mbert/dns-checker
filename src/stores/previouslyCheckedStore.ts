@@ -13,7 +13,7 @@ export type PreviouslyCheckedItem = {
 type PreviouslyCheckedStore = {
   previouslyCheckedList: PreviouslyCheckedItem[];
   addPreviouslyChecked: (previouslyChecked: string, tests?: Test[]) => void;
-  updatePreviouslyChecked: (id: string, tests?: Test[]) => void;
+  updatePreviouslyChecked: (id: string, item: PreviouslyCheckedItem) => void;
   removePreviouslyChecked: (previouslyChecked: string) => void;
   clearPreviouslyChecked: () => void;
 };
@@ -40,18 +40,14 @@ export const usePreviouslyCheckedStore = create<PreviouslyCheckedStore>()(
           ],
         }));
       },
-      updatePreviouslyChecked: (id, tests) => {
+      updatePreviouslyChecked: (id, item) => {
         set((state) => ({
-          previouslyCheckedList: state.previouslyCheckedList.map((item) => {
-            if (item.id === id) {
-              return {
-                ...item,
-                timestamp: Date.now(),
-                tests,
-              };
+          previouslyCheckedList: state.previouslyCheckedList.map((oldItem) => {
+            if (oldItem.id === id) {
+              return item;
             }
 
-            return item;
+            return oldItem;
           }),
         }));
       },

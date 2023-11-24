@@ -21,7 +21,7 @@ export default function Home() {
   const router = useRouter();
   const { searchParams, createQueryString } = useQueryString();
   const { tests, runTests } = useTestStore();
-  const { addPreviouslyChecked } = usePreviouslyCheckedStore();
+  const { previouslyCheckedList, addPreviouslyChecked, updatePreviouslyChecked } = usePreviouslyCheckedStore();
 
   const [loading, setLoading] = useState(false);
 
@@ -41,12 +41,22 @@ export default function Home() {
 
   const url = searchParams.get('url') || '';
 
-  const checkDomain = async (domain: string, recordType: RecordType) => {
+  const checkDomain = async (domain: string, recordType: RecordType, runBecauseUrlChange = false) => {
     setLoading(true);
     const res = await fetch(`/api/check/${domain}/${recordType || 'A'}`);
     const { addresses } = await res.json();
 
-    addPreviouslyChecked(domain, tests);
+    const previouslyCheckedItem = previouslyCheckedList.find((item) => item.value === domain);
+    if (previouslyCheckedItem && !runBecauseUrlChange) {
+      updatePreviouslyChecked(previouslyCheckedItem.id, {
+        ...previouslyCheckedItem,
+        timestamp: Date.now(),
+        value: domain,
+        tests,
+      });
+    } else {
+      addPreviouslyChecked(domain, tests);
+    }
 
     setResolvedAddresses(addresses);
     setLastRefresh(new Date());
@@ -85,14 +95,12 @@ export default function Home() {
       if (_interval) clearInterval(_interval);
       if (_uiInterval) clearInterval(_uiInterval);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshIntervalTime, lastRefresh, url]);
 
   useEffect(() => {
     if (url.length > 0) {
-      checkDomain(url, RecordTypes[0]);
+      checkDomain(url, RecordTypes[0], true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
