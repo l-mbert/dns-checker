@@ -26,7 +26,6 @@ export function PreviousDomainsList() {
               <button
                 onClick={() => {
                   router.push(`/?${createQueryString('url', url)}`);
-                  router.refresh();
                 }}
                 className="underline underline-offset-2 hover:underline-offset-4 text-sm text-gray-500"
               >

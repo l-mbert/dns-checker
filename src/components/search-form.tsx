@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RecordTypes } from '@/constants/recordType';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -38,6 +38,10 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
       recordType: 'A',
     },
   });
+
+  useEffect(() => {
+    form.setValue('url', url);
+  }, [url]);
 
   return (
     <form className="rounded-md border border-gray-200 bg-white px-6 py-8" onSubmit={form.handleSubmit(onSubmit)}>
