@@ -14,10 +14,10 @@ interface ResultItemProps {
 export function ResultItem({ dnsServer, testResults, children }: ResultItemProps) {
   return (
     <div key={dnsServer.ip} className="rounded-md border border-gray-200 bg-white px-6 py-8">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2">
         <div>
           <div className="flex gap-2">
-            <h2 className="text-md font-medium text-gray-700">{dnsServer.name}</h2>
+            <h2 className="text-sm md:text-base font-medium text-gray-700">{dnsServer.name}</h2>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>

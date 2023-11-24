@@ -14,7 +14,7 @@ export function PreviousDomainsList() {
   return (
     <div className="rounded-md border border-gray-200 bg-white px-6 py-8">
       <div className="flex justify-between">
-        <h2 className="text-md font-medium text-gray-700">Previously checked</h2>
+        <h2 className="text-base font-medium text-gray-700">Previously checked</h2>
         <button onClick={() => clearPreviouslyChecked()} className="text-gray-500 text-xs">
           Clear
         </button>

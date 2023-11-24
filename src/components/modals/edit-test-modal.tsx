@@ -8,6 +8,8 @@ import { useForm } from 'react-hook-form';
 import shortid from 'shortid';
 import { z } from 'zod';
 
+import { useMediaQuery } from '@/hooks/useMediaQuery';
+
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Modal } from '../ui/modal';
@@ -20,7 +22,7 @@ const testSchema = z.object({
   name: z.string().min(1),
   type: z.enum(['equals', 'contains', 'regex', 'startsWith', 'endsWith']),
   negated: z.boolean().default(false),
-  value: z.string(),
+  value: z.string().min(1),
 });
 
 interface EditTestModalProps {
@@ -36,6 +38,8 @@ export function EditTestModal({
   test,
   onSubmit = () => {},
 }: EditTestModalProps) {
+  const { isMobile } = useMediaQuery();
+
   const id = shortid();
   const form = useForm<z.infer<typeof testSchema>>({
     resolver: zodResolver(testSchema),
@@ -135,28 +139,38 @@ export function EditTestModal({
               id="negated"
               checked={form.getValues('negated')}
             />
-            <label htmlFor="negated" className="flex items-center space-x-2 text-sm font-medium text-gray-700">
+            <label
+              htmlFor="negated"
+              className="flex flex-col md:flex-row md:items-center md:space-x-2 text-sm font-medium text-gray-700"
+            >
               <span>Negated</span>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <div>
-                      <InfoIcon className="w-4 h-4 text-gray-500" />
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-sm">
-                    <p className="text-xs">
-                      Negated tests are inverted. For example, if you want to check if the IP is not equal to{' '}
-                      <code>1.1.1.1</code>
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              {isMobile ? (
+                <p className="text-xs font-normal">
+                  Negated tests are inverted. For example, if you want to check if the IP is not equal to{' '}
+                  <code className="font-mono">1.1.1.1</code>
+                </p>
+              ) : (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger type="button">
+                      <div className="h-6 w-6 flex items-center justify-center">
+                        <InfoIcon className="w-4 h-4 text-gray-500" />
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-sm">
+                      <p className="text-xs">
+                        Negated tests are inverted. For example, if you want to check if the IP is not equal to{' '}
+                        <code className="font-mono">1.1.1.1</code>
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
             </label>
           </div>
         </div>
         <div>
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full mt-2">
             {test ? 'Save' : 'Add'}
           </Button>
         </div>
