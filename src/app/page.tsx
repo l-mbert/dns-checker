@@ -25,7 +25,15 @@ export default function Home() {
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
   const [secondsUntilNextRefresh, setSecondsUntilNextRefresh] = useState<number>(0);
 
-  const [resolvedAddresses, setResolvedAddresses] = useState<Record<string, string>>({});
+  const [resolvedAddresses, setResolvedAddresses] = useState<
+    Record<
+      string,
+      {
+        value: string;
+        time: number;
+      }
+    >
+  >({});
 
   const url = searchParams.get('url') || '';
 
@@ -125,8 +133,11 @@ export default function Home() {
                     <div className="animate-spin duration-[2000ms]">
                       <LoaderIcon />
                     </div>
-                  ) : result ? (
-                    <span className="text-green-500">{result}</span>
+                  ) : result && result.value !== '' ? (
+                    <div className="flex flex-col items-end">
+                      <span className="text-green-500">{result.value}</span>
+                      <span className="text-gray-400 text-xs">{result.time}ms</span>
+                    </div>
                   ) : url.length > 0 ? (
                     <span className="text-red-500">Not found</span>
                   ) : (
