@@ -7,6 +7,8 @@ import { cn } from '@/lib/utils';
 
 import './globals.css';
 
+import { ToastProvider } from '@/components/toast-provider';
+
 const fontHeading = localFont({
   src: '../assets/fonts/CalSans-SemiBold.woff2',
   variable: '--font-heading',
@@ -29,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         )}
       >
         {children}
+        <ToastProvider />
       </body>
     </html>
   );

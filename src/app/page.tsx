@@ -8,6 +8,7 @@ import { RecordTypes, type RecordType } from '@/constants/recordType';
 import { usePreviouslyCheckedStore } from '@/stores/previouslyCheckedStore';
 import { TestResult, useTestStore } from '@/stores/testStore';
 import { LoaderIcon } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { useQueryString } from '@/hooks/queryString';
 import { Footer } from '@/components/footer';
@@ -44,6 +45,17 @@ export default function Home() {
   const checkDomain = async (domain: string, recordType: RecordType, runBecauseUrlChange = false) => {
     setLoading(true);
     const res = await fetch(`/api/check/${domain}/${recordType || 'A'}`);
+    if (res.status === 429) {
+      const { limit, reset } = await res.json();
+      toast.error(
+        `You have reached the limit of ${limit} requests in 60 seconds. Please try again in ${Math.round(
+          (reset - Date.now()) / 1000
+        )} seconds.`
+      );
+      setResolvedAddresses({});
+      setLoading(false);
+      return;
+    }
     const { addresses } = await res.json();
 
     const previouslyCheckedItem = previouslyCheckedList.find((item) => item.value === domain);
