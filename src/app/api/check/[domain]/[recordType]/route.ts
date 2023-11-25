@@ -1,10 +1,12 @@
 import { Resolver } from 'dns';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { dnsServers } from '@/constants/dnsServers';
 import { RecordType, RecordTypes } from '@/constants/recordType';
 
+import { ratelimit } from '@/lib/redis';
+
 export const GET = async (
-  req: Request,
+  req: NextRequest,
   {
     params,
   }: {
@@ -15,6 +17,20 @@ export const GET = async (
 
   if (!domain) {
     return new Response('Bad request', { status: 400 });
+  }
+
+  if (!RecordTypes.includes(recordType)) {
+    return new Response('Bad request', { status: 400 });
+  }
+
+  const isRatelimiterActive = process.env.ACTIVATE_RATE_LIMITER === 'true';
+  if (isRatelimiterActive) {
+    const ip = req.ip || req.headers.get('x-real-ip') || req.headers.get('x-forwarded-for') || '127.0.0.1';
+    const { success } = await ratelimit.limit(ip);
+
+    if (!success) {
+      return new Response('Too many requests', { status: 429 });
+    }
   }
 
   const addressesResults = await Promise.allSettled(
