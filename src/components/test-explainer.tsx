@@ -25,10 +25,10 @@ export function TestExplainer({ test, fontSize = 'sm' }: TestExplainerProps) {
       testExplainerEnd = '"';
       break;
     case 'startsWith':
-      testExplainerStart = '*';
+      testExplainerEnd = '*';
       break;
     case 'endsWith':
-      testExplainerEnd = '*';
+      testExplainerStart = '*';
       break;
   }
 
