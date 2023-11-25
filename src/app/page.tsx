@@ -119,7 +119,7 @@ export default function Home() {
         )}
       </Header>
       <div className="mx-auto mt-10 flex w-full max-w-6xl flex-1 flex-col items-start gap-4 px-4 pb-14 lg:flex-row">
-        <div className="sticky top-10 mb-8 w-full space-y-6 lg:mb-0 lg:max-w-md">
+        <div className="top-10 mb-8 w-full space-y-6 md:sticky lg:mb-0 lg:max-w-md">
           <SearchForm
             onSubmit={(data) => {
               if (data.refresh && data.refresh !== '0') {
