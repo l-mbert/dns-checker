@@ -68,7 +68,7 @@ export default function Home() {
     let _uiInterval: NodeJS.Timeout;
     if (refreshIntervalTime) {
       _interval = setInterval(() => {
-        checkDomain(url, RecordTypes[0]);
+        checkDomain(url, RecordTypes[0], true);
       }, refreshIntervalTime * 1000);
 
       // Update UI counter every second
