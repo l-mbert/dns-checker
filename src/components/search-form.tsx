@@ -37,7 +37,7 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
     onSubmit: (data) => {
       if (data.type === 'regex') {
         // Remove leading and trailing slashes
-        data.value = data.value.replace(/^\/|\/$/g, '');
+        data.value = data.value.replace(/^(?:https?:\/\/)?(?:www\.)?([^\/\n\r]+)(?:[\/\?\#].*)?$/, '$1');
       }
       addTest(data);
       setShowEditTestModal(false);
