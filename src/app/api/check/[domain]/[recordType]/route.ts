@@ -2,10 +2,11 @@ import { Resolver } from 'dns';
 import { NextRequest, NextResponse } from 'next/server';
 import { dnsServers } from '@/constants/dnsServers';
 import { RecordType, RecordTypes } from '@/constants/recordType';
+import { DNS } from '@/stores/dnsStore';
 
 import { ratelimit } from '@/lib/redis';
 
-export const GET = async (
+export const POST = async (
   req: NextRequest,
   {
     params,
@@ -13,6 +14,16 @@ export const GET = async (
     params: { domain: string; recordType: RecordType };
   }
 ) => {
+  let remoteDnsServer: DNS[] = [];
+  try {
+    const res = await req.json();
+    if (res.dnsServers) {
+      remoteDnsServer = res.dnsServers;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
   const { domain, recordType } = params;
 
   if (!domain) {
@@ -40,8 +51,10 @@ export const GET = async (
     }
   }
 
+  let dnsServersToUse = remoteDnsServer.length > 0 ? remoteDnsServer : dnsServers;
+
   const addressesResults = await Promise.allSettled(
-    dnsServers.map((server: { ip: string; name: string }) => {
+    dnsServersToUse.map((server: { id: string; ip: string; name: string }) => {
       const resolver: Resolver = new Resolver();
       resolver.setServers([server.ip]);
       return new Promise<
@@ -72,7 +85,7 @@ export const GET = async (
             const item = addresses;
             if (!item) {
               return resolve({
-                [server.name]: { value: '', time: end - start },
+                [server.id]: { value: '', time: end - start },
               });
             }
 
@@ -80,23 +93,23 @@ export const GET = async (
               case 'A':
               case 'AAAA':
                 return resolve({
-                  [server.name]: { value: (item as string[])[0] || '', time: end - start },
+                  [server.id]: { value: (item as string[])[0] || '', time: end - start },
                 });
               case 'MX':
                 return resolve({
-                  [server.name]: { value: (item as { exchange: string }[])[0]?.exchange || '', time: end - start },
+                  [server.id]: { value: (item as { exchange: string }[])[0]?.exchange || '', time: end - start },
                 });
               case 'NS':
                 return resolve({
-                  [server.name]: { value: (item as string[])[0] || '', time: end - start },
+                  [server.id]: { value: (item as string[])[0] || '', time: end - start },
                 });
               case 'PTR':
                 return resolve({
-                  [server.name]: { value: (item as string[])[0] || '', time: end - start },
+                  [server.id]: { value: (item as string[])[0] || '', time: end - start },
                 });
               case 'TXT':
                 return resolve({
-                  [server.name]: { value: (item as string[])[0] || '', time: end - start },
+                  [server.id]: { value: (item as string[])[0] || '', time: end - start },
                 });
               default:
                 return resolve({});
