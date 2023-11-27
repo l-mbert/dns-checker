@@ -44,6 +44,15 @@ export default function Home() {
 
   const checkDomain = async (domain: string, recordType: RecordType, runBecauseUrlChange = false) => {
     setLoading(true);
+
+    // Remove protocol from domain
+    domain = domain.replace(/(^\w+:|^)\/\//, '');
+
+    // Check if domain contains slashes and if so, remove everything after the first slash
+    if (domain.includes('/')) {
+      domain = domain.split('/')[0];
+    }
+
     const res = await fetch(`/api/check/${domain}/${recordType || 'A'}`);
     if (res.status === 429) {
       const { limit, reset } = await res.json();
