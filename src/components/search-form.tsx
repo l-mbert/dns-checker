@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { RecordTypes } from '@/constants/recordType';
 import { useTestStore } from '@/stores/testStore';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { motion } from 'framer-motion';
 import { PlusCircleIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -64,39 +63,32 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
     <>
       <EditTestModal />
       <div className={'flex w-full justify-center'}>
-        <motion.form
-          layout
+        <form
           className="
             fixed bottom-0 w-full border border-gray-200 bg-white px-6 pb-10 pt-6 shadow-2xl lg:static lg:rounded-md lg:py-8 lg:shadow-none"
           onSubmit={form.handleSubmit(onSubmit)}
         >
-          <motion.div layout className="flex items-center justify-between">
+          <div className="flex items-center justify-between">
             <label htmlFor="url" className="block text-sm font-medium text-gray-700">
               Your domain
             </label>
-          </motion.div>
-          <motion.div layout className="relative mt-1 flex flex-col rounded-md">
+          </div>
+          <div className="relative mt-1 flex flex-col rounded-md">
             <Input id="url" type="text" placeholder="example.com" className="shadow-sm" {...form.register('url')} />
             {form.formState.errors.url && (
               <p className="mt-2 text-xs text-red-500">{form.formState.errors.url.message}</p>
             )}
-          </motion.div>
-          <motion.div layout className="mt-4 flex justify-between">
+          </div>
+          <div className="mt-4 flex justify-between">
             <Button type="submit">Check my domain</Button>
             <Button type="button" variant="link" onClick={() => setAdvancedOptionsOpen((prev) => !prev)}>
               Advanced options
             </Button>
-          </motion.div>
+          </div>
 
           {/* Advanced options */}
           {advancedOptionsOpen && (
-            <motion.div
-              layout
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.1 }}
-              className="mt-4"
-            >
+            <div className="mt-4">
               <hr className="my-4 border-gray-200" />
               <h2 className="mb-2 text-xs font-medium text-gray-700/60">Advanced options</h2>
               <div>
@@ -160,9 +152,9 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
                 <PlusCircleIcon className="mr-2" size={16} />
                 New Test
               </Button>
-            </motion.div>
+            </div>
           )}
-        </motion.form>
+        </form>
       </div>
     </>
   );
