@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 import { RecordTypes } from '@/constants/recordType';
 import { useTestStore } from '@/stores/testStore';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,6 +18,7 @@ import { Input } from './ui/input';
 
 interface SearchFormProps {
   onSubmit: (data: z.infer<typeof formSchema>) => void;
+  formRef: RefObject<HTMLFormElement>;
 }
 
 const formSchema = z.object({
@@ -31,7 +32,7 @@ const formSchema = z.object({
   recordType: z.enum(RecordTypes).default('A'),
 });
 
-export function SearchForm({ onSubmit }: SearchFormProps) {
+export function SearchForm({ onSubmit, formRef }: SearchFormProps) {
   const { tests, addTest } = useTestStore();
   const [advancedOptionsOpen, setAdvancedOptionsOpen] = useState(false);
   const { setShowEditTestModal, EditTestModal } = useEditTestModal({
@@ -63,8 +64,10 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
   return (
     <>
       <EditTestModal />
+      <div className={'fixed bottom-0 left-0 right-0 top-0'} onClick={() => setAdvancedOptionsOpen(false)}></div>
       <div className={'flex w-full justify-center'}>
         <motion.form
+          ref={formRef}
           layout
           className="
             fixed bottom-0 w-full border border-gray-200 bg-white px-6 pb-10 pt-6 shadow-2xl lg:static lg:rounded-md lg:py-8 lg:shadow-none"
@@ -90,13 +93,7 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
 
           {/* Advanced options */}
           {advancedOptionsOpen && (
-            <motion.div
-              layout
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.1 }}
-              className="mt-4"
-            >
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="mt-4">
               <hr className="my-4 border-gray-200" />
               <h2 className="mb-2 text-xs font-medium text-gray-700/60">Advanced options</h2>
               <div>
@@ -144,11 +141,11 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
               </div>
               <hr className="my-4 border-gray-200" />
               <h2 className="mb-2 text-xs font-medium text-gray-700/60">Tests</h2>
-              <ul className="mt-2 space-y-2">
+              <motion.ul layout layoutRoot className="mt-2 space-y-2">
                 {tests.map((test) => (
                   <TestItem key={test.id} test={test} />
                 ))}
-              </ul>
+              </motion.ul>
               <Button
                 type="button"
                 variant="secondary"
