@@ -64,7 +64,10 @@ export function SearchForm({ onSubmit, formRef }: SearchFormProps) {
   return (
     <>
       <EditTestModal />
-      <div className={'fixed bottom-0 left-0 right-0 top-0'} onClick={() => setAdvancedOptionsOpen(false)}></div>
+      <div
+        className={'fixed bottom-0 left-0 right-0 top-0 lg:hidden'}
+        onClick={() => setAdvancedOptionsOpen(false)}
+      ></div>
       <div className={'flex w-full justify-center'}>
         <motion.form
           ref={formRef}
