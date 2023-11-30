@@ -26,4 +26,3 @@ And uses code from: (Thanks guys!)
 - [shadcn/ui](https://ui.shadcn.com/)
 
 and much more! Check out the `package.json` for more info.
-[]()
