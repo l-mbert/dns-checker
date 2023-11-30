@@ -129,7 +129,7 @@ export default function Home() {
       <Header>
         {refreshIntervalTime && (
           <div>
-            <p className="mt-2 flex items-center text-gray-500">
+            <p className="flex items-center text-gray-500 lg:mt-2">
               Refreshing in{' '}
               <span className="leading-0 mx-1.5 w-[37px] rounded-sm bg-gray-100 px-2 py-1 text-right font-mono tabular-nums">
                 {secondsUntilNextRefresh}
@@ -139,8 +139,8 @@ export default function Home() {
           </div>
         )}
       </Header>
-      <div className="mx-auto mt-10 flex w-full max-w-6xl flex-1 flex-col items-start gap-4 px-4 pb-14 lg:flex-row">
-        <div className="top-10 mb-8 w-full space-y-6 md:sticky lg:mb-0 lg:max-w-md">
+      <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-start gap-4 px-4 pb-14 lg:mt-10 lg:flex-row">
+        <div className="w-full space-y-6 md:sticky lg:top-10 lg:max-w-md">
           <SearchForm
             onSubmit={(data) => {
               if (data.refresh && data.refresh !== '0') {
