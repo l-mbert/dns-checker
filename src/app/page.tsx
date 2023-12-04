@@ -7,11 +7,9 @@ import { dnsServers } from '@/constants/dnsServers';
 import { RecordTypes, type RecordType } from '@/constants/recordType';
 import { usePreviouslyCheckedStore } from '@/stores/previouslyCheckedStore';
 import { TestResult, useTestStore } from '@/stores/testStore';
-import { motion } from 'framer-motion';
 import { LoaderIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { cn } from '@/lib/utils';
 import { useQueryString } from '@/hooks/queryString';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { useObserveHeight } from '@/hooks/useObserveHeight';
