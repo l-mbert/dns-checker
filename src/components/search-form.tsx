@@ -70,7 +70,7 @@ export function SearchForm({ onSubmit, advancedOptionsOpen, setAdvancedOptionsOp
       <div className={'flex w-full justify-center'}>
         <form
           className="
-            fixed bottom-0 w-full border border-gray-200 bg-white px-6 pb-10 pt-6 shadow-2xl lg:static lg:rounded-md lg:py-8 lg:shadow-none"
+            fixed z-10 bottom-0 w-full border border-gray-200 bg-white px-6 pb-10 pt-6 shadow-2xl lg:static lg:rounded-md lg:py-8 lg:shadow-none"
           onSubmit={form.handleSubmit(onSubmit)}
         >
           <div className="flex items-center justify-between">
