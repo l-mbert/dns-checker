@@ -7,10 +7,12 @@ import { dnsServers } from '@/constants/dnsServers';
 import { RecordTypes, type RecordType } from '@/constants/recordType';
 import { usePreviouslyCheckedStore } from '@/stores/previouslyCheckedStore';
 import { TestResult, useTestStore } from '@/stores/testStore';
+import { motion } from 'framer-motion';
 import { LoaderIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { useQueryString } from '@/hooks/queryString';
+import { useObserveHeight } from '@/hooks/useObserveHeight';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 import { ResultItem } from '@/components/result-item';
@@ -124,12 +126,13 @@ export default function Home() {
     }
   }, []);
 
+  const { height, ref } = useObserveHeight<HTMLFormElement>();
   return (
     <main className="flex min-h-screen flex-col">
       <Header>
         {refreshIntervalTime && (
           <div>
-            <p className="mt-2 flex items-center text-gray-500">
+            <p className="flex items-center text-gray-500 lg:mt-2">
               Refreshing in{' '}
               <span className="leading-0 mx-1.5 w-[37px] rounded-sm bg-gray-100 px-2 py-1 text-right font-mono tabular-nums">
                 {secondsUntilNextRefresh}
@@ -139,9 +142,10 @@ export default function Home() {
           </div>
         )}
       </Header>
-      <div className="mx-auto mt-10 flex w-full max-w-6xl flex-1 flex-col items-start gap-4 px-4 pb-14 lg:flex-row">
-        <div className="top-10 mb-8 w-full space-y-6 md:sticky lg:mb-0 lg:max-w-md">
+      <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-start gap-4 px-4 pb-14 lg:mt-10 lg:flex-row">
+        <div className="w-full space-y-6 md:sticky lg:top-10 lg:max-w-md">
           <SearchForm
+            formRef={ref}
             onSubmit={(data) => {
               if (data.refresh && data.refresh !== '0') {
                 setRefreshIntervalTime(parseInt(data.refresh, 10));
@@ -155,8 +159,8 @@ export default function Home() {
           <PreviousDomainsList />
         </div>
         <div className="w-full flex-1">
-          <h2 className="mb-4 block font-heading text-3xl lg:hidden">Results</h2>
-          <div className="space-y-2">
+          <h2 className=" block font-heading text-3xl lg:hidden">Results</h2>
+          <motion.div className="space-y-2" animate={{ marginBottom: height }}>
             {dnsServers.map((dnsServer) => {
               const result = resolvedAddresses[dnsServer.name];
 
@@ -184,7 +188,7 @@ export default function Home() {
                 </ResultItem>
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </div>
       <Footer />
