@@ -11,6 +11,7 @@ import { motion } from 'framer-motion';
 import { LoaderIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
+import { cn } from '@/lib/utils';
 import { useQueryString } from '@/hooks/queryString';
 import { useObserveHeight } from '@/hooks/useObserveHeight';
 import { Footer } from '@/components/footer';
@@ -31,6 +32,7 @@ export default function Home() {
   const [refreshIntervalTime, setRefreshIntervalTime] = useState<number>();
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
   const [secondsUntilNextRefresh, setSecondsUntilNextRefresh] = useState<number>(0);
+  const [advancedOptionsOpen, setAdvancedOptionsOpen] = useState(false);
 
   const [resolvedAddresses, setResolvedAddresses] = useState<
     Record<
@@ -126,7 +128,6 @@ export default function Home() {
     }
   }, []);
 
-  const { height, ref } = useObserveHeight<HTMLFormElement>();
   return (
     <main className="flex min-h-screen flex-col">
       <Header>
@@ -145,7 +146,8 @@ export default function Home() {
       <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-start gap-4 px-4 pb-14 lg:mt-10 lg:flex-row">
         <div className="w-full space-y-6 md:sticky lg:top-10 lg:max-w-md">
           <SearchForm
-            formRef={ref}
+            advancedOptionsOpen={advancedOptionsOpen}
+            setAdvancedOptionsOpen={setAdvancedOptionsOpen}
             onSubmit={(data) => {
               if (data.refresh && data.refresh !== '0') {
                 setRefreshIntervalTime(parseInt(data.refresh, 10));
@@ -160,7 +162,7 @@ export default function Home() {
         </div>
         <div className="w-full flex-1">
           <h2 className=" block font-heading text-3xl lg:hidden">Results</h2>
-          <motion.div className="space-y-2" animate={{ marginBottom: height }}>
+          <div className={cn('space-y-2 lg:pb-0', advancedOptionsOpen ? 'pb-[400px]' : 'pb-24')}>
             {dnsServers.map((dnsServer) => {
               const result = resolvedAddresses[dnsServer.name];
 
@@ -188,7 +190,7 @@ export default function Home() {
                 </ResultItem>
               );
             })}
-          </motion.div>
+          </div>
         </div>
       </div>
       <Footer />
