@@ -1,6 +1,6 @@
 'use client';
 
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, RefObject, SetStateAction, useEffect, useState } from 'react';
 import { RecordTypes } from '@/constants/recordType';
 import { useTestStore } from '@/stores/testStore';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,6 +18,7 @@ import { Input } from './ui/input';
 
 interface SearchFormProps {
   onSubmit: (data: z.infer<typeof formSchema>) => void;
+  formRef: RefObject<HTMLFormElement>;
   advancedOptionsOpen: boolean;
   setAdvancedOptionsOpen: Dispatch<SetStateAction<boolean>>;
 }
@@ -33,7 +34,7 @@ const formSchema = z.object({
   recordType: z.enum(RecordTypes).default('A'),
 });
 
-export function SearchForm({ onSubmit, advancedOptionsOpen, setAdvancedOptionsOpen }: SearchFormProps) {
+export function SearchForm({ onSubmit, advancedOptionsOpen, setAdvancedOptionsOpen, formRef }: SearchFormProps) {
   const { tests, addTest } = useTestStore();
   const { setShowEditTestModal, EditTestModal } = useEditTestModal({
     onSubmit: (data) => {
@@ -69,8 +70,9 @@ export function SearchForm({ onSubmit, advancedOptionsOpen, setAdvancedOptionsOp
       ></div>
       <div className={'flex w-full justify-center'}>
         <form
+          ref={formRef}
           className="
-            fixed z-10 bottom-0 w-full border border-gray-200 bg-white px-6 pb-10 pt-6 shadow-2xl lg:static lg:rounded-md lg:py-8 lg:shadow-none"
+            fixed bottom-0 z-10 w-full border border-gray-200 bg-white px-6 pb-10 pt-6 shadow-2xl lg:static lg:rounded-md lg:py-8 lg:shadow-none"
           onSubmit={form.handleSubmit(onSubmit)}
         >
           <div className="flex items-center justify-between">
