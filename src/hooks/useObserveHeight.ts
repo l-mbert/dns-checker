@@ -1,8 +1,8 @@
-import { RefObject, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-export function useObserveHeight<T extends HTMLElement>(defaultRef?: RefObject<T>) {
+export function useObserveHeight<T extends HTMLElement>() {
   const [height, setHeight] = useState(0);
-  const ref = defaultRef || useRef<T>(null);
+  const ref = useRef<T>(null);
 
   useEffect(() => {
     const observer = new ResizeObserver((entries) => {
