@@ -64,10 +64,6 @@ export function SearchForm({ onSubmit, advancedOptionsOpen, setAdvancedOptionsOp
   return (
     <>
       <EditTestModal />
-      <div
-        className={'fixed bottom-0 left-0 right-0 top-0 lg:hidden'}
-        onClick={() => setAdvancedOptionsOpen(false)}
-      ></div>
       <div className={'flex w-full justify-center'}>
         <form
           ref={formRef}
@@ -120,7 +116,8 @@ export function SearchForm({ onSubmit, advancedOptionsOpen, setAdvancedOptionsOp
                       className="shadow-sm [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                       {...form.register('refresh')}
                     />
-                    <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-xs text-gray-500">
+                    <span
+                      className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-xs text-gray-500">
                       seconds
                     </span>
                   </div>
@@ -171,6 +168,10 @@ export function SearchForm({ onSubmit, advancedOptionsOpen, setAdvancedOptionsOp
           </AnimatePresence>
         </form>
       </div>
+      {advancedOptionsOpen && <div
+        className={'fixed bottom-0 left-0 right-0 top-0 lg:hidden bg-primary/10'}
+        onClick={() => setAdvancedOptionsOpen(false)}
+      ></div>}
     </>
   );
 }

@@ -144,7 +144,7 @@ export default function Home() {
         )}
       </Header>
       <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-start gap-4 px-4 pb-14 lg:mt-10 lg:flex-row">
-        <div className="w-full space-y-6 md:sticky lg:top-10 lg:max-w-md">
+        <div className="w-full grid gap-6 md:sticky lg:top-10 lg:max-w-md">
           <SearchForm
             formRef={ref}
             advancedOptionsOpen={advancedOptionsOpen}
@@ -162,7 +162,7 @@ export default function Home() {
           <PreviousDomainsList />
         </div>
         <div className="w-full flex-1">
-          <h2 className=" block font-heading text-3xl lg:hidden">Results</h2>
+          <h2 className="block font-heading text-3xl lg:hidden">Results</h2>
           <div
             style={{
               paddingBottom: (isMobile || isTablet) && advancedOptionsOpen ? `${height}px` : '96px',
