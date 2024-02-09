@@ -83,12 +83,12 @@ export const dnsServers = [
     country: 'South Africa',
     city: 'Cullinan',
   },
-  {
-    name: 'Pyton Communication Services B.V.',
-    ip: '193.58.204.59',
-    country: 'Netherlands',
-    city: 'Weert',
-  },
+  // { // This server is not working
+  //   name: 'Pyton Communication Services B.V.',
+  //   ip: '193.58.204.59',
+  //   country: 'Netherlands',
+  //   city: 'Weert',
+  // },
   {
     name: 'Association Gitoyen',
     ip: '80.67.169.40',
