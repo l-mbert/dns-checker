@@ -15,6 +15,7 @@ import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { useObserveHeight } from '@/hooks/useObserveHeight';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
+import { RefreshIndicator } from '@/components/refresh-indicator';
 import { ResultItem } from '@/components/result-item';
 import { SearchForm } from '@/components/search-form';
 
@@ -89,40 +90,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    let _interval: NodeJS.Timeout;
-    let _uiInterval: NodeJS.Timeout;
-    if (refreshIntervalTime) {
-      _interval = setInterval(() => {
-        checkDomain(url, RecordTypes[0], true);
-      }, refreshIntervalTime * 1000);
-
-      // Update UI counter every second
-      _uiInterval = setInterval(() => {
-        if (refreshIntervalTime === 0) {
-          setSecondsUntilNextRefresh(0);
-          return;
-        }
-
-        const calculatedSecondsUntilNextRefresh = Math.round(
-          (refreshIntervalTime * 1000 - (new Date().getTime() - lastRefresh.getTime())) / 1000
-        );
-        // Fix off by one error
-        if (secondsUntilNextRefresh === 0) {
-          setLastRefresh(new Date());
-          setSecondsUntilNextRefresh(refreshIntervalTime);
-          return;
-        }
-        setSecondsUntilNextRefresh(calculatedSecondsUntilNextRefresh);
-      }, 1000);
-    }
-
-    return () => {
-      if (_interval) clearInterval(_interval);
-      if (_uiInterval) clearInterval(_uiInterval);
-    };
-  }, [refreshIntervalTime, lastRefresh, url]);
-
-  useEffect(() => {
     if (url.length > 0) {
       checkDomain(url, RecordTypes[0], true);
     }
@@ -131,20 +98,13 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col">
       <Header>
-        {refreshIntervalTime && (
-          <div>
-            <p className="flex items-center text-gray-500 lg:mt-2">
-              Refreshing in{' '}
-              <span className="leading-0 mx-1.5 w-[37px] rounded-sm bg-gray-100 px-2 py-1 text-right font-mono tabular-nums">
-                {secondsUntilNextRefresh}
-              </span>{' '}
-              second(s)
-            </p>
-          </div>
-        )}
+        <RefreshIndicator
+          refreshIntervalTime={refreshIntervalTime}
+          onRefresh={() => checkDomain(url, RecordTypes[0])}
+        />
       </Header>
       <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-start gap-4 px-4 pb-14 lg:mt-10 lg:flex-row">
-        <div className="w-full grid gap-6 md:sticky lg:top-10 lg:max-w-md">
+        <div className="grid w-full gap-6 md:sticky lg:top-10 lg:max-w-md">
           <SearchForm
             formRef={ref}
             advancedOptionsOpen={advancedOptionsOpen}
@@ -179,13 +139,16 @@ export default function Home() {
 
               return (
                 <ResultItem key={dnsServer.ip} dnsServer={dnsServer} testResults={testResults}>
-                  {loading ? (
-                    <div className="duration-[2000ms] animate-spin">
-                      <LoaderIcon />
-                    </div>
-                  ) : result && result.value !== '' ? (
+                  {result && result.value !== '' ? (
                     <div className="flex flex-col items-end">
-                      <span className="font-mono tabular-nums tracking-tight text-green-500">{result.value}</span>
+                      <div className="flex items-center gap-2">
+                        {loading && (
+                          <div className="duration-[2000ms] h-4 w-4 animate-spin">
+                            <LoaderIcon className="h-4 w-4" />
+                          </div>
+                        )}
+                        <span className="font-mono tabular-nums tracking-tight text-green-500">{result.value}</span>
+                      </div>
                       <span className="text-xs text-gray-400">{result.time}ms</span>
                     </div>
                   ) : url.length > 0 ? (
